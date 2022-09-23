@@ -114,11 +114,11 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		K1XXp4Ls+J5vKZ7vBakvqF9mUNc=
+		syvJcWZIvo9sPv7PMrm5wab7F9A=
 		</data>
 		<key>Modules/IDCaptureLite.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo</key>
 		<data>
-		ci7R534FURlAbqJDOlcQtQfUFzA=
+		NWU/Mz6h0zWyRZfk7MxUGlq0ako=
 		</data>
 		<key>Modules/IDCaptureLite.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
@@ -130,7 +130,7 @@
 		</data>
 		<key>Modules/IDCaptureLite.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		WdMBOMEcx7nXSv2wvR8lsJG81Tw=
+		hxxsGuTkM13vgBoYAS5CrvgV5Ks=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -332,7 +332,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			1mgwO7jpyrz/eeBAW6NDqsazMRNkkpvzuG2DOxFLKzE=
+			YOAa3+gwgAdkjQeRj5rO9mtIqpvA8J1U0fsyn908zL8=
 			</data>
 		</dict>
 		<key>Modules/IDCaptureLite.swiftmodule/arm64-apple-ios.swiftdoc</key>
@@ -353,7 +353,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			MpFA8ev5/PZxPB3SbDExDO6cwSyKxIvLFwL9LeeGjks=
+			V572CyeZc8odS55NFjgcFG9qwN/FHvR3/I5GKJ/+fUU=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

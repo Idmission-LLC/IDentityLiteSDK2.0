@@ -110,7 +110,7 @@
 		</data>
 		<key>GoogleMVFaceDetectorResources.bundle/Info.plist</key>
 		<data>
-		RNxWpJrUGLySOdwOlDwbRH+Rkb4=
+		YMWY+dj3T+9i/cvTZvlGSJ3Dmn4=
 		</data>
 		<key>GoogleMVFaceDetectorResources.bundle/LMprec_600.emd</key>
 		<data>
@@ -278,23 +278,23 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		R9+vQrBMTHhghJXK0WqW2OKondU=
+		sEo6te7Vi3PckYpmNu9aKmnw+iw=
 		</data>
 		<key>Modules/IDentityLiteSDK.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo</key>
 		<data>
-		S48dUXTVZ2U7JFofHROecQtuoo0=
+		CTzFz53TtrwX8faoFxbhafgJYLM=
 		</data>
 		<key>Modules/IDentityLiteSDK.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
-		VeImLNtgV44gXnicIW6DBm4TT6A=
+		CvUCJTzhXK6kiNDUn2x7Nil7pYg=
 		</data>
 		<key>Modules/IDentityLiteSDK.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<data>
-		OZPMEibnIEfoJaS8MAUxb2HgNEo=
+		0iFJd33emIGQxikN+psbchR5w4E=
 		</data>
 		<key>Modules/IDentityLiteSDK.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		8TA9iQ3va3sSB1cxh8QH1qI9cGQ=
+		xBL4M/6P2g5yiql4rXmBzZbdfeI=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -493,7 +493,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			V5bd9nSEg1vETpMIPXFA17PLFzUJZBl5faGR/VjiVU4=
+			uN5hvUFlXXOITj2rCQBOVqQhEn3E4E0rNIQ1ekvnaXc=
 			</data>
 		</dict>
 		<key>GoogleMVFaceDetectorResources.bundle/LMprec_600.emd</key>
@@ -787,28 +787,28 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			l0w8b40rVMto4KpT1XXD7gAARNl1s4eLgQDUFBjwWLI=
+			9IxGHlsscgkjVCZAuBAQuLIE4hYcBJzJQgttDQAAOWQ=
 			</data>
 		</dict>
 		<key>Modules/IDentityLiteSDK.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			/z+4OYJzg8cqZpkCA3mh5oOdTxcOd2ksxaL68/31oso=
+			WIBTiWMCOo3k8/wt0T2Gr4sABUVfzLYRTQCOy67QWSM=
 			</data>
 		</dict>
 		<key>Modules/IDentityLiteSDK.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			dZXz2OaDf0rqDLWDSqRyK2ge+0jHKOPvL3oYipV+wCM=
+			/YIAnb0AVzlLCS33FVu48CuKWPgmT6mDnhxBImbz89U=
 			</data>
 		</dict>
 		<key>Modules/IDentityLiteSDK.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			X570fBgba6woYPbdPO/nvjGdGc5iBwLdsjRgkrQR2oU=
+			haSdfVpbCSt8O3HmIWtE5GOPCOlBjywQMII9Ls1uAS0=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

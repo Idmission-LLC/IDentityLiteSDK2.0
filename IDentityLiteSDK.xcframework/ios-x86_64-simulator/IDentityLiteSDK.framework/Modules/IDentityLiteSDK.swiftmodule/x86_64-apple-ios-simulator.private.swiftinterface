@@ -1,11 +1,13 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.7 (swiftlang-5.7.0.127.4 clang-1400.0.29.50)
+// swift-compiler-version: Apple Swift version 5.7.2 (swiftlang-5.7.2.135.5 clang-1400.0.29.51)
 // swift-module-flags: -target x86_64-apple-ios13.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name IDentityLiteSDK
 // swift-module-flags-ignorable: -enable-bare-slash-regex
 import AVFoundation
 import Accelerate
 import AudioToolbox
 import CommonCrypto
+import Compression
+import CoreFoundation
 import CoreGraphics
 import CoreMedia
 import CryptoKit
@@ -15,12 +17,36 @@ import GZIP
 import MLKitFaceDetection
 import MLKitVision
 import MetalPerformanceShaders
-import SSZipArchive
 import Swift
 import TensorFlowLite
 import UIKit
 import _Concurrency
 import _StringProcessing
+import zlib
+extension IDentityLiteSDK.FingerPrintCapture {
+  public struct Options {
+    public var enableInstructionScreen: Swift.Bool
+    public var isDebugEnabled: Swift.Bool
+    public var isCaptureLeftHand: Swift.Bool
+    public var captureIndexFinger: Swift.Bool
+    public var captureMiddleFinger: Swift.Bool
+    public var captureRingFinger: Swift.Bool
+    public var captureBabyFinger: Swift.Bool
+    public var keepIndexFinger: Swift.Bool
+    public var keepMiddleFinger: Swift.Bool
+    public var keepRingFinger: Swift.Bool
+    public var keepBaby: Swift.Bool
+    public var cameraZoom: Swift.Float
+    public var minIndexThrshold: Swift.Int
+    public var minMiddleThrshold: Swift.Int
+    public var minRingThrshold: Swift.Int
+    public var minBabyThrshold: Swift.Int
+    public var maxIndexThrshold: Swift.Int
+    public var maxMiddleThrshold: Swift.Int
+    public var maxRingThrshold: Swift.Int
+    public var maxBabyThrshold: Swift.Int
+  }
+}
 public struct CustomerVerifyDataResponse : Swift.Codable {
   public var extractedPersonalData: IDentityLiteSDK.PersonalCustomerVerifyResponseData?
   public func encode(to encoder: Swift.Encoder) throws
@@ -60,6 +86,26 @@ extension Foundation.NSNotification.Name {
   public static let documentCaptureDebugData: Foundation.Notification.Name
   public static let documentCaptureMode: Foundation.Notification.Name
 }
+extension IDentityLiteSDK.SignatureCapture {
+  public enum LabelPosition {
+    case top
+    case center
+    case bottom
+    public static func == (a: IDentityLiteSDK.SignatureCapture.LabelPosition, b: IDentityLiteSDK.SignatureCapture.LabelPosition) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public struct Layout {
+  }
+}
+extension Foundation.Data {
+  @available(*, deprecated, message: "Please use `Int64` for `size` and provider `position`.")
+  public static func compress(size: Swift.Int, bufferSize: Swift.Int, provider: (_ position: Swift.Int, _ size: Swift.Int) throws -> Foundation.Data, consumer: (_ data: Foundation.Data) throws -> Swift.Void) throws -> IDentityLiteSDK.CRC32
+  @available(*, deprecated, message: "Please use `Int64` for `size` and provider `position`.")
+  public static func decompress(size: Swift.Int, bufferSize: Swift.Int, skipCRC32: Swift.Bool, provider: (_ position: Swift.Int, _ size: Swift.Int) throws -> Foundation.Data, consumer: (_ data: Foundation.Data) throws -> Swift.Void) throws -> IDentityLiteSDK.CRC32
+}
 public struct FormDetailValidateIdResponseData : Swift.Codable {
   public var uniqueRequestId: Swift.String?
   public var verificationResultId: Swift.Int?
@@ -75,10 +121,11 @@ public struct CustomerEnrollDataResponse : Swift.Codable {
   public func encode(to encoder: Swift.Encoder) throws
   public init(from decoder: Swift.Decoder) throws
 }
-public struct SignatureData : Swift.Encodable {
+public struct SignatureData : Swift.Codable {
   public var signatureImage: Swift.String?
   public init(signatureImage: Swift.String? = nil)
   public func encode(to encoder: Swift.Encoder) throws
+  public init(from decoder: Swift.Decoder) throws
 }
 public struct AdditionalCustomerEnrollBiometricRequestData : Swift.Encodable {
   public enum NeedImmediateResponse : Swift.String, Swift.Encodable {
@@ -297,22 +344,27 @@ public struct CustomerValidateIdDataRequest : Swift.Encodable {
   public init(idData: IDentityLiteSDK.IdDataRequest, personalData: IDentityLiteSDK.PersonalCustomerCommonRequestData1? = nil, additionalDocuments: [IDentityLiteSDK.AdditionalDocumentsRequest]? = nil)
   public func encode(to encoder: Swift.Encoder) throws
 }
-public enum Language : Swift.String {
-  case none
-  case en
-  case es
-  public init?(rawValue: Swift.String)
-  public typealias RawValue = Swift.String
-  public var rawValue: Swift.String {
-    get
-  }
-}
 public struct BiometricEnrollBiometricRequestData : Swift.Encodable {
   public var selfie: Swift.String?
   public var fingerPrintData: IDentityLiteSDK.FingerPrintData?
   public var voiceData: Swift.String?
   public init(selfie: Swift.String? = nil, fingerPrintData: IDentityLiteSDK.FingerPrintData? = nil, voiceData: Swift.String? = nil)
   public func encode(to encoder: Swift.Encoder) throws
+}
+public class SignatureCapture {
+  public static var options: IDentityLiteSDK.SignatureCapture.Options
+  public static var strings: IDentityLiteSDK.SignatureCapture.Strings
+  public static var colors: IDentityLiteSDK.SignatureCapture.Colors
+  public static var fonts: IDentityLiteSDK.SignatureCapture.Fonts
+  public static var images: IDentityLiteSDK.SignatureCapture.Images
+  public static var layout: IDentityLiteSDK.SignatureCapture.Layout
+  public init(overlayFrame: CoreFoundation.CGRect)
+  @objc deinit
+}
+extension IDentityLiteSDK.Archive {
+  final public var data: Foundation.Data? {
+    get
+  }
 }
 public struct StatusData : Swift.Codable {
   public var statusCode: Swift.String?
@@ -429,6 +481,7 @@ public struct DetectedData {
   public var isPhotoPresent: Swift.Bool
   public var mrz: IDentityLiteSDK.MRZResult?
   public var barcode: [Swift.String : Swift.String]?
+  public var ocrStrings: [Swift.String]?
   public var idType: Swift.String?
   public var country: Swift.String?
   public var state: Swift.String?
@@ -452,7 +505,7 @@ public class IDCapture {
   public static var images: IDentityLiteSDK.IDCapture.Images
   public static var layout: IDentityLiteSDK.IDCapture.Layout
   weak public var delegate: IDentityLiteSDK.IDCaptureDelegate?
-  public init(overlayFrame: CoreFoundation.CGRect)
+  public init(overlayFrame: CoreFoundation.CGRect, isVideoCapture: Swift.Bool = false)
   public func typeMismatch()
   public func retry()
   @objc deinit
@@ -463,6 +516,41 @@ extension IDentityLiteSDK.IDCapture : IDentityLiteSDK.CaptureSessionDelegate {
 extension Foundation.NSNotification.Name {
   public static let idCaptureDebugData: Foundation.Notification.Name
   public static let idCaptureMode: Foundation.Notification.Name
+}
+public struct Entry : Swift.Equatable {
+  public enum EntryType : Swift.Int {
+    case file
+    case directory
+    case symlink
+    public init?(rawValue: Swift.Int)
+    public typealias RawValue = Swift.Int
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+  public func path(using encoding: Swift.String.Encoding) -> Swift.String
+  public var path: Swift.String {
+    get
+  }
+  public var fileAttributes: [Foundation.FileAttributeKey : Any] {
+    get
+  }
+  public var checksum: IDentityLiteSDK.CRC32 {
+    get
+  }
+  public var type: IDentityLiteSDK.Entry.EntryType {
+    get
+  }
+  public var isCompressed: Swift.Bool {
+    get
+  }
+  public var compressedSize: Swift.UInt64 {
+    get
+  }
+  public var uncompressedSize: Swift.UInt64 {
+    get
+  }
+  public static func == (lhs: IDentityLiteSDK.Entry, rhs: IDentityLiteSDK.Entry) -> Swift.Bool
 }
 public struct AdditionalCustomerCommonData : Swift.Encodable {
   public var uniqueRequestId: Swift.String
@@ -491,6 +579,11 @@ public struct CustomerVerifyDataRequest : Swift.Encodable {
   public var biometericData: IDentityLiteSDK.BiometricVerifyRequestData
   public init(personalData: IDentityLiteSDK.PersonalCustomerVerifyData, additionalDocuments: [IDentityLiteSDK.AdditionalDocumentsRequest]? = nil, biometricData: IDentityLiteSDK.BiometricVerifyRequestData)
   public func encode(to encoder: Swift.Encoder) throws
+}
+extension Foundation.FileManager {
+  public class var documentDirectory: Foundation.URL {
+    get
+  }
 }
 public enum CameraPosition {
   case back, front
@@ -669,15 +762,10 @@ public struct FingerPrint : Swift.Encodable {
     case rightMiddleFinger
     case rightRingFinger
     case rightLittleFinger
-    case rightThumb
     case leftIndexFinger
     case leftMiddleFinger
     case leftRingFinger
     case leftLittleFinger
-    case leftThumb
-    case leftFourFingers
-    case rightFourFingers
-    case twoThumbs
     case unknown
     public init?(rawValue: Swift.String)
     public typealias RawValue = Swift.String
@@ -710,6 +798,10 @@ extension IDentityLiteSDK.IDCapture {
     public var retryScreenButtonFont: UIKit.UIFont?
   }
 }
+extension IDentityLiteSDK.FingerPrintCapture {
+  public struct Fonts {
+  }
+}
 public struct BiometricLiveCheckData : Swift.Encodable {
   public var selfie: Swift.String
   public init(selfie: Swift.String)
@@ -718,6 +810,10 @@ public struct BiometricLiveCheckData : Swift.Encodable {
 public typealias BoolCompletion = (Swift.Bool) -> Swift.Void
 public protocol CaptureSessionDelegate : AnyObject {
   func captured(image: UIKit.UIImage, captureMode: IDentityLiteSDK.CaptureMode, lensPosition: Swift.Float)
+  func captured(sampleBuffer: CoreMedia.CMSampleBuffer)
+}
+extension IDentityLiteSDK.CaptureSessionDelegate {
+  public func captured(sampleBuffer: CoreMedia.CMSampleBuffer)
 }
 public enum CaptureMode {
   case standard, high, barcode, autofill
@@ -728,6 +824,7 @@ public enum CaptureMode {
   }
 }
 @objc @_inheritsConvenienceInitializers public class CaptureSession : ObjectiveC.NSObject {
+  final public let videoDataOutput: AVFoundation.AVCaptureVideoDataOutput
   weak public var delegate: IDentityLiteSDK.CaptureSessionDelegate?
   public var cameraPosition: AVFoundation.AVCaptureDevice.Position
   public var captureMode: IDentityLiteSDK.CaptureMode {
@@ -947,10 +1044,40 @@ public struct CustomerVerifyResponse : Swift.Codable {
   public func encode(to encoder: Swift.Encoder) throws
   public init(from decoder: Swift.Decoder) throws
 }
+extension IDentityLiteSDK.Archive {
+  final public func extract(_ entry: IDentityLiteSDK.Entry, to url: Foundation.URL, bufferSize: Swift.Int = defaultReadChunkSize, skipCRC32: Swift.Bool = false, progress: Foundation.Progress? = nil) throws -> IDentityLiteSDK.CRC32
+  final public func extract(_ entry: IDentityLiteSDK.Entry, bufferSize: Swift.Int = defaultReadChunkSize, skipCRC32: Swift.Bool = false, progress: Foundation.Progress? = nil, consumer: (_ data: Foundation.Data) throws -> Swift.Void) throws -> IDentityLiteSDK.CRC32
+}
+extension IDentityLiteSDK.FingerPrintCapture {
+  public struct Colors {
+    public var instructionScreenBackgroundColor: UIKit.UIColor?
+    public var instructionScreenBackButtonColor: UIKit.UIColor?
+    public var instructionScreenBackButtonTintColor: UIKit.UIColor?
+    public var instructionScreenImageTintColor: UIKit.UIColor?
+    public var instructionScreenLeftHandButtonColor: UIKit.UIColor?
+    public var instructionScreenRightHandButtonColor: UIKit.UIColor?
+  }
+}
+extension Foundation.Data {
+  public var floats: [Swift.Float]? {
+    get
+  }
+  public var cgFloats: [CoreFoundation.CGFloat]? {
+    get
+  }
+  public var bytes: [Swift.UInt8]? {
+    get
+  }
+}
 public struct EmployeeData : Swift.Encodable {
   public var companyId: Swift.String?
   public init(companyId: Swift.String? = nil)
   public func encode(to encoder: Swift.Encoder) throws
+}
+extension IDentityLiteSDK.Archive {
+  final public func totalUnitCountForRemoving(_ entry: IDentityLiteSDK.Entry) -> Swift.Int64
+  final public func totalUnitCountForReading(_ entry: IDentityLiteSDK.Entry) -> Swift.Int64
+  final public func totalUnitCountForAddingItem(at url: Foundation.URL) -> Swift.Int64
 }
 public struct CustomerEnrollDataRequest : Swift.Encodable {
   public var idData: IDentityLiteSDK.IdDataRequest
@@ -992,6 +1119,19 @@ public struct SecurityData : Swift.Encodable {
   public init(userName: Swift.String, password: Swift.String, merchantId: Swift.Int)
   public func encode(to encoder: Swift.Encoder) throws
 }
+@_hasMissingDesignatedInitializers @objc public class DetectedFingerPrintData : ObjectiveC.NSObject {
+  @objc public var boxes: [CoreFoundation.CGFloat]
+  @objc public var classes: [Swift.Float]
+  @objc public var scores: [Swift.Float]
+  @objc public var counts: [Swift.Float]
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc public class FingerPrintDetector : ObjectiveC.NSObject {
+  public var interpreter: TensorFlowLite.Interpreter?
+  @objc override dynamic public init()
+  @objc public func detectFingerPrint(image: UIKit.UIImage?) -> IDentityLiteSDK.DetectedFingerPrintData?
+  @objc deinit
+}
 public struct CustomerValidateIdResponse : Swift.Codable {
   public var status: IDentityLiteSDK.StatusData?
   public var resultData: IDentityLiteSDK.FormDetailValidateIdResponseData?
@@ -1006,10 +1146,20 @@ public struct CustomerIdentifyRequest : Swift.Encodable {
   public init(securityData: IDentityLiteSDK.SecurityData, biometricData: IDentityLiteSDK.BiometricIdentifyData, additionalData: IDentityLiteSDK.AdditionalCustomerCommonData)
   public func encode(to encoder: Swift.Encoder) throws
 }
+extension IDentityLiteSDK.SignatureCapture {
+  public struct Images {
+  }
+}
 public struct AdditionalCustomerLiveCheckResponseData : Swift.Codable {
   public var liveFaceDetectionFlag: Swift.String?
   public func encode(to encoder: Swift.Encoder) throws
   public init(from decoder: Swift.Decoder) throws
+}
+extension IDentityLiteSDK.Archive {
+  final public func addEntry(with path: Swift.String, relativeTo baseURL: Foundation.URL, compressionMethod: IDentityLiteSDK.CompressionMethod = .none, bufferSize: Swift.Int = defaultWriteChunkSize, progress: Foundation.Progress? = nil) throws
+  final public func addEntry(with path: Swift.String, fileURL: Foundation.URL, compressionMethod: IDentityLiteSDK.CompressionMethod = .none, bufferSize: Swift.Int = defaultWriteChunkSize, progress: Foundation.Progress? = nil) throws
+  final public func addEntry(with path: Swift.String, type: IDentityLiteSDK.Entry.EntryType, uncompressedSize: Swift.Int64, modificationDate: Foundation.Date = Date(), permissions: Swift.UInt16? = nil, compressionMethod: IDentityLiteSDK.CompressionMethod = .none, bufferSize: Swift.Int = defaultWriteChunkSize, progress: Foundation.Progress? = nil, provider: (_ position: Swift.Int64, _ size: Swift.Int) throws -> Foundation.Data) throws
+  final public func remove(_ entry: IDentityLiteSDK.Entry, bufferSize: Swift.Int = defaultReadChunkSize, progress: Foundation.Progress? = nil) throws
 }
 public struct PersonalCustomerValidateIdFaceMatchResponseData : Swift.Codable {
   public var uniqueNumber: Swift.String?
@@ -1166,6 +1316,20 @@ public struct RealnessScores {
   public let realScore: Swift.Float
   public let screenScore: Swift.Float
 }
+extension IDentityLiteSDK.SignatureCapture {
+  public struct Colors {
+    public var backgroundColor: UIKit.UIColor?
+    public var backButtonColor: UIKit.UIColor?
+    public var backButtonTintColor: UIKit.UIColor?
+    public var titleLabelColor: UIKit.UIColor?
+    public var titleLabelTextColor: UIKit.UIColor?
+    public var clearButtonColor: UIKit.UIColor?
+    public var clearButtonTextColor: UIKit.UIColor?
+    public var doneButtonColor: UIKit.UIColor?
+    public var doneButtonTextColor: UIKit.UIColor?
+    public var signatureStrokeColor: UIKit.UIColor?
+  }
+}
 public struct DeDuplicationResponseData : Swift.Codable {
   public var faceMatchingScore: Swift.String?
   public var duplicatePersonId: Swift.Int?
@@ -1210,6 +1374,9 @@ public struct MRZResult : Swift.Encodable {
     get
   }
   public func encode(to encoder: Swift.Encoder) throws
+}
+extension IDentityLiteSDK.MRZResult : Swift.Equatable {
+  public static func == (lhs: IDentityLiteSDK.MRZResult, rhs: IDentityLiteSDK.MRZResult) -> Swift.Bool
 }
 public struct FingerPrintMetadata : Swift.Encodable {
   public enum Format : Swift.String, Swift.Encodable {
@@ -1287,6 +1454,7 @@ extension IDentityLiteSDK.IDCapture {
     public mutating func reset()
   }
 }
+public typealias FILEPointer = Swift.UnsafeMutablePointer<Darwin.FILE>
 public struct PersonalCustomerValidateIdResponseData : Swift.Codable {
   public var uniqueNumber: Swift.String?
   public var name: Swift.String?
@@ -1314,6 +1482,20 @@ public struct PersonalCustomerValidateIdResponseData : Swift.Codable {
   public func encode(to encoder: Swift.Encoder) throws
   public init(from decoder: Swift.Decoder) throws
 }
+public enum Language : Swift.String {
+  case none
+  case en
+  case es
+  public static var current: IDentityLiteSDK.Language {
+    get
+    set
+  }
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
 public struct CustomerEnrollResponse : Swift.Codable {
   public var status: IDentityLiteSDK.StatusData?
   public var resultData: IDentityLiteSDK.FormDetailCommonResponseData?
@@ -1327,6 +1509,19 @@ public struct FingerPrintData : Swift.Encodable {
   public var metadata: IDentityLiteSDK.FingerPrintMetadata
   public init(fingerPrints: [IDentityLiteSDK.FingerPrint], metadata: IDentityLiteSDK.FingerPrintMetadata)
   public func encode(to encoder: Swift.Encoder) throws
+}
+extension Foundation.FileManager {
+  public func zipItem(at sourceURL: Foundation.URL, to destinationURL: Foundation.URL, shouldKeepParent: Swift.Bool = true, compressionMethod: IDentityLiteSDK.CompressionMethod = .none, progress: Foundation.Progress? = nil) throws
+  public func unzipItem(at sourceURL: Foundation.URL, to destinationURL: Foundation.URL, skipCRC32: Swift.Bool = false, progress: Foundation.Progress? = nil, preferredEncoding: Swift.String.Encoding? = nil) throws
+}
+extension Foundation.URL {
+  public func isContained(in parentDirectoryURL: Foundation.URL) -> Swift.Bool
+}
+extension IDentityLiteSDK.Archive {
+  @available(*, deprecated, message: "Please use `Int` for `bufferSize`.")
+  final public func extract(_ entry: IDentityLiteSDK.Entry, to url: Foundation.URL, bufferSize: Swift.UInt32, skipCRC32: Swift.Bool = false, progress: Foundation.Progress? = nil) throws -> IDentityLiteSDK.CRC32
+  @available(*, deprecated, message: "Please use `Int` for `bufferSize`.")
+  final public func extract(_ entry: IDentityLiteSDK.Entry, bufferSize: Swift.UInt32, skipCRC32: Swift.Bool = false, progress: Foundation.Progress? = nil, consumer: (_ data: Foundation.Data) throws -> Swift.Void) throws -> IDentityLiteSDK.CRC32
 }
 public struct CustomerValidateIdFaceMatchResponse : Swift.Codable {
   public var status: IDentityLiteSDK.StatusData?
@@ -1354,7 +1549,7 @@ extension IDentityLiteSDK.SelfieCapture {
     public var straightenHead: Swift.String
     public var moveFaceDown: Swift.String
     public var moveFaceUp: Swift.String
-    public var glassesDetected: Swift.String
+    public var sunglassesDetected: Swift.String
     public var removeHat: Swift.String
     public var fakeFace: Swift.String
     public var retryScreenText: Swift.String
@@ -1373,6 +1568,13 @@ extension IDentityLiteSDK.DocumentCapture {
     public var documentCaptureFrameWidth: Swift.Float?
     public var documentCaptureFrameHeight: Swift.Float?
     public var documentFileSizeLimit: Swift.Float
+  }
+}
+extension IDentityLiteSDK.FingerPrintCapture {
+  public struct Images {
+    public var instructionScreenImage: UIKit.UIImage?
+    public var instructionScreenLeftHandButtonImage: UIKit.UIImage?
+    public var instructionScreenRightHandButtonImage: UIKit.UIImage?
   }
 }
 extension IDentityLiteSDK.DocumentCapture {
@@ -1403,6 +1605,18 @@ public struct State : Swift.Codable {
 public struct StateList {
   public static var states: [IDentityLiteSDK.State] {
     get
+  }
+}
+extension IDentityLiteSDK.FingerPrintCapture {
+  public struct Strings {
+    public var moveCloser: Swift.String
+    public var moveAway: Swift.String
+    public var incorrectHand: Swift.String
+    public var holdSteady: Swift.String
+    public var capturingDetail: Swift.String
+    public var fingerTooClose: Swift.String
+    public var fingerTooFar: Swift.String
+    public mutating func reset()
   }
 }
 extension IDentityLiteSDK.DocumentCapture {
@@ -1485,6 +1699,13 @@ public struct PersonalCustomerEnrollResponseData : Swift.Codable {
   public func encode(to encoder: Swift.Encoder) throws
   public init(from decoder: Swift.Decoder) throws
 }
+extension IDentityLiteSDK.SignatureCapture {
+  public struct Fonts {
+    public var titleLabelTextFont: UIKit.UIFont?
+    public var clearButtonTextFont: UIKit.UIFont?
+    public var doneButtonTextFont: UIKit.UIFont?
+  }
+}
 public struct AdditionalCustomerLiveCheckData : Swift.Encodable {
   public var uniqueRequestId: Swift.String
   public var metadata: IDentityLiteSDK.Metadata?
@@ -1522,6 +1743,9 @@ extension CoreFoundation.CGRect {
   public func aspectFit(from size1: CoreFoundation.CGSize, to size2: CoreFoundation.CGSize) -> CoreFoundation.CGRect
   public func expand(by factor: CoreFoundation.CGFloat) -> CoreFoundation.CGRect
   public static func + (lhs: CoreFoundation.CGRect, rhs: CoreFoundation.CGVector) -> CoreFoundation.CGRect
+  public var area: CoreFoundation.CGFloat {
+    get
+  }
 }
 extension IDentityLiteSDK.IDentitySDK {
   public static var templateModelBaseURL: Swift.String {
@@ -1556,6 +1780,16 @@ extension UIKit.UIViewController {
     get
   }
 }
+public class FingerPrintCapture {
+  public static var options: IDentityLiteSDK.FingerPrintCapture.Options
+  public static var strings: IDentityLiteSDK.FingerPrintCapture.Strings
+  public static var colors: IDentityLiteSDK.FingerPrintCapture.Colors
+  public static var fonts: IDentityLiteSDK.FingerPrintCapture.Fonts
+  public static var images: IDentityLiteSDK.FingerPrintCapture.Images
+  public static var layout: IDentityLiteSDK.FingerPrintCapture.Layout
+  public init(overlayFrame: CoreFoundation.CGRect)
+  @objc deinit
+}
 extension QuartzCore.CALayer {
   public func draw(rect: CoreFoundation.CGRect, color: UIKit.UIColor)
   public func removeShapeSublayers()
@@ -1564,6 +1798,17 @@ public struct BiometricValidateIdFaceMatchData : Swift.Encodable {
   public var selfie: Swift.String
   public init(selfie: Swift.String)
   public func encode(to encoder: Swift.Encoder) throws
+}
+extension UIKit.UIImage {
+  public func scaledDownToFit(width newWidth: CoreFoundation.CGFloat) -> UIKit.UIImage?
+  public func scaledDownToFit(height newHeight: CoreFoundation.CGFloat) -> UIKit.UIImage?
+  public func scaledRGBData(using scaler: IDentityLiteSDK.MetalBilinearScaler, size: CoreFoundation.CGSize, isQuantized: Swift.Bool) -> Foundation.Data?
+  public func cropping(to rect: CoreFoundation.CGRect) -> UIKit.UIImage?
+}
+extension IDentityLiteSDK.SignatureCapture {
+  public struct Options {
+    public var signatureStrokeWidth: CoreFoundation.CGFloat?
+  }
 }
 public struct IdDataResponse : Swift.Codable {
   public var idType: Swift.String?
@@ -1594,6 +1839,54 @@ public struct IdDataResponse : Swift.Codable {
   public func encode(to encoder: Swift.Encoder) throws
   public init(from decoder: Swift.Decoder) throws
 }
+public let defaultReadChunkSize: Swift.Int
+public let defaultWriteChunkSize: Swift.Int
+public let defaultFilePermissions: Swift.UInt16
+public let defaultDirectoryPermissions: Swift.UInt16
+final public class Archive : Swift.Sequence {
+  public enum ArchiveError : Swift.Error {
+    case unreadableArchive
+    case unwritableArchive
+    case invalidEntryPath
+    case invalidCompressionMethod
+    case invalidCRC32
+    case cancelledOperation
+    case invalidBufferSize
+    case invalidEntrySize
+    case invalidLocalHeaderDataOffset
+    case invalidLocalHeaderSize
+    case invalidCentralDirectoryOffset
+    case invalidCentralDirectorySize
+    case invalidCentralDirectoryEntryCount
+    case missingEndOfCentralDirectoryRecord
+    public static func == (a: IDentityLiteSDK.Archive.ArchiveError, b: IDentityLiteSDK.Archive.ArchiveError) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public enum AccessMode : Swift.UInt {
+    case create
+    case read
+    case update
+    public init?(rawValue: Swift.UInt)
+    public typealias RawValue = Swift.UInt
+    public var rawValue: Swift.UInt {
+      get
+    }
+  }
+  final public let url: Foundation.URL
+  final public let accessMode: IDentityLiteSDK.Archive.AccessMode
+  public init?(url: Foundation.URL, accessMode mode: IDentityLiteSDK.Archive.AccessMode, preferredEncoding: Swift.String.Encoding? = nil)
+  public init?(data: Foundation.Data = Data(), accessMode mode: IDentityLiteSDK.Archive.AccessMode, preferredEncoding: Swift.String.Encoding? = nil)
+  @objc deinit
+  final public func makeIterator() -> Swift.AnyIterator<IDentityLiteSDK.Entry>
+  final public subscript(path: Swift.String) -> IDentityLiteSDK.Entry? {
+    get
+  }
+  public typealias Element = IDentityLiteSDK.Entry
+  public typealias Iterator = Swift.AnyIterator<IDentityLiteSDK.Entry>
+}
 public struct PersonalCustomerVerifyData : Swift.Encodable {
   public var uniqueNumber: Swift.String
   public init(uniqueNumber: Swift.String)
@@ -1613,6 +1906,10 @@ extension IDentityLiteSDK.DocumentCapture {
   public struct Layout {
     public var labelPosition: IDentityLiteSDK.DocumentCapture.LabelPosition
   }
+}
+public class MetalBilinearScaler {
+  public init()
+  @objc deinit
 }
 public struct FormDetailCommonResponseData : Swift.Codable {
   public var uniqueRequestId: Swift.String?
@@ -1635,6 +1932,14 @@ public struct FormDetailCommonResponseData : Swift.Codable {
   public func encode(to encoder: Swift.Encoder) throws
   public init(from decoder: Swift.Decoder) throws
 }
+extension IDentityLiteSDK.SignatureCapture {
+  public struct Strings {
+    public var titleText: Swift.String
+    public var clearButtonText: Swift.String
+    public var doneButtonText: Swift.String
+    public mutating func reset()
+  }
+}
 extension Foundation.Date {
   public var msSince1970: Swift.String {
     get
@@ -1643,6 +1948,30 @@ extension Foundation.Date {
 extension Swift.Double {
   public var ms: Swift.Int {
     get
+  }
+}
+extension IDentityLiteSDK.Archive {
+  @available(*, deprecated, message: "Please use `Int` for `bufferSize`.")
+  final public func addEntry(with path: Swift.String, relativeTo baseURL: Foundation.URL, compressionMethod: IDentityLiteSDK.CompressionMethod = .none, bufferSize: Swift.UInt32, progress: Foundation.Progress? = nil) throws
+  @available(*, deprecated, message: "Please use `Int` for `bufferSize`.")
+  final public func addEntry(with path: Swift.String, fileURL: Foundation.URL, compressionMethod: IDentityLiteSDK.CompressionMethod = .none, bufferSize: Swift.UInt32, progress: Foundation.Progress? = nil) throws
+  @available(*, deprecated, message: "Please use `Int64` for `uncompressedSize` and provider `position`. `Int` for `bufferSize`.")
+  final public func addEntry(with path: Swift.String, type: IDentityLiteSDK.Entry.EntryType, uncompressedSize: Swift.UInt32, modificationDate: Foundation.Date = Date(), permissions: Swift.UInt16? = nil, compressionMethod: IDentityLiteSDK.CompressionMethod = .none, bufferSize: Swift.Int = defaultWriteChunkSize, progress: Foundation.Progress? = nil, provider: (_ position: Swift.Int, _ size: Swift.Int) throws -> Foundation.Data) throws
+  @available(*, deprecated, message: "Please use `Int` for `bufferSize`.")
+  final public func remove(_ entry: IDentityLiteSDK.Entry, bufferSize: Swift.UInt32, progress: Foundation.Progress? = nil) throws
+}
+extension IDentityLiteSDK.FingerPrintCapture {
+  public enum LabelPosition {
+    case top
+    case center
+    case bottom
+    public static func == (a: IDentityLiteSDK.FingerPrintCapture.LabelPosition, b: IDentityLiteSDK.FingerPrintCapture.LabelPosition) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public struct Layout {
   }
 }
 public struct IDType : Swift.Codable {
@@ -1685,7 +2014,7 @@ public class SelfieCapture {
   public static var images: IDentityLiteSDK.SelfieCapture.Images
   public static var layout: IDentityLiteSDK.SelfieCapture.Layout
   weak public var delegate: IDentityLiteSDK.SelfieCaptureDelegate?
-  public init(overlayFrame: CoreFoundation.CGRect)
+  public init(overlayFrame: CoreFoundation.CGRect, isVideoCapture: Swift.Bool = false)
   public func retry()
   @objc deinit
 }
@@ -1708,6 +2037,23 @@ public struct CustomerIdentifyResponse : Swift.Codable {
   public var responseCustomerData: IDentityLiteSDK.CustomerIdentifyDataResponse?
   public func encode(to encoder: Swift.Encoder) throws
   public init(from decoder: Swift.Decoder) throws
+}
+public enum CompressionMethod : Swift.UInt16 {
+  case none
+  case deflate
+  public init?(rawValue: Swift.UInt16)
+  public typealias RawValue = Swift.UInt16
+  public var rawValue: Swift.UInt16 {
+    get
+  }
+}
+public typealias CRC32 = Swift.UInt32
+public typealias Consumer = (_ data: Foundation.Data) throws -> Swift.Void
+public typealias Provider = (_ position: Swift.Int64, _ size: Swift.Int) throws -> Foundation.Data
+extension Foundation.Data {
+  public func crc32(checksum: IDentityLiteSDK.CRC32) -> IDentityLiteSDK.CRC32
+  public static func compress(size: Swift.Int64, bufferSize: Swift.Int, provider: (_ position: Swift.Int64, _ size: Swift.Int) throws -> Foundation.Data, consumer: (_ data: Foundation.Data) throws -> Swift.Void) throws -> IDentityLiteSDK.CRC32
+  public static func decompress(size: Swift.Int64, bufferSize: Swift.Int, skipCRC32: Swift.Bool, provider: (_ position: Swift.Int64, _ size: Swift.Int) throws -> Foundation.Data, consumer: (_ data: Foundation.Data) throws -> Swift.Void) throws -> IDentityLiteSDK.CRC32
 }
 public struct OcrMetadata : Swift.Encodable {
   public var idData: [Swift.String : Swift.String]
@@ -1821,6 +2167,8 @@ public struct CustomerEnrollBiometricResponse : Swift.Codable {
   public func encode(to encoder: Swift.Encoder) throws
   public init(from decoder: Swift.Decoder) throws
 }
+extension IDentityLiteSDK.SignatureCapture.LabelPosition : Swift.Equatable {}
+extension IDentityLiteSDK.SignatureCapture.LabelPosition : Swift.Hashable {}
 extension IDentityLiteSDK.AdditionalCustomerEnrollBiometricRequestData.NeedImmediateResponse : Swift.Equatable {}
 extension IDentityLiteSDK.AdditionalCustomerEnrollBiometricRequestData.NeedImmediateResponse : Swift.Hashable {}
 extension IDentityLiteSDK.AdditionalCustomerEnrollBiometricRequestData.NeedImmediateResponse : Swift.RawRepresentable {}
@@ -1866,11 +2214,11 @@ extension IDentityLiteSDK.AdditionalCustomerWFlagCommonData.StripSpecialCharacte
 extension IDentityLiteSDK.PersonalCustomerCommonRequestData.Gender : Swift.Equatable {}
 extension IDentityLiteSDK.PersonalCustomerCommonRequestData.Gender : Swift.Hashable {}
 extension IDentityLiteSDK.PersonalCustomerCommonRequestData.Gender : Swift.RawRepresentable {}
-extension IDentityLiteSDK.Language : Swift.Equatable {}
-extension IDentityLiteSDK.Language : Swift.Hashable {}
-extension IDentityLiteSDK.Language : Swift.RawRepresentable {}
 extension IDentityLiteSDK.DetectedData.DocumentSide : Swift.Equatable {}
 extension IDentityLiteSDK.DetectedData.DocumentSide : Swift.Hashable {}
+extension IDentityLiteSDK.Entry.EntryType : Swift.Equatable {}
+extension IDentityLiteSDK.Entry.EntryType : Swift.Hashable {}
+extension IDentityLiteSDK.Entry.EntryType : Swift.RawRepresentable {}
 extension IDentityLiteSDK.CameraPosition : Swift.Equatable {}
 extension IDentityLiteSDK.CameraPosition : Swift.Hashable {}
 extension IDentityLiteSDK.PromptType : Swift.Equatable {}
@@ -1890,11 +2238,24 @@ extension IDentityLiteSDK.FingerPrintMetadata.Format : Swift.Hashable {}
 extension IDentityLiteSDK.FingerPrintMetadata.Format : Swift.RawRepresentable {}
 extension IDentityLiteSDK.IDError.Strings : Swift.Equatable {}
 extension IDentityLiteSDK.IDError.Strings : Swift.Hashable {}
+extension IDentityLiteSDK.Language : Swift.Equatable {}
+extension IDentityLiteSDK.Language : Swift.Hashable {}
+extension IDentityLiteSDK.Language : Swift.RawRepresentable {}
 extension IDentityLiteSDK.PersonalCustomerCommonRequestData1.Gender : Swift.Equatable {}
 extension IDentityLiteSDK.PersonalCustomerCommonRequestData1.Gender : Swift.Hashable {}
 extension IDentityLiteSDK.PersonalCustomerCommonRequestData1.Gender : Swift.RawRepresentable {}
+extension IDentityLiteSDK.Archive.ArchiveError : Swift.Equatable {}
+extension IDentityLiteSDK.Archive.ArchiveError : Swift.Hashable {}
+extension IDentityLiteSDK.Archive.AccessMode : Swift.Equatable {}
+extension IDentityLiteSDK.Archive.AccessMode : Swift.Hashable {}
+extension IDentityLiteSDK.Archive.AccessMode : Swift.RawRepresentable {}
 extension IDentityLiteSDK.DocumentCapture.LabelPosition : Swift.Equatable {}
 extension IDentityLiteSDK.DocumentCapture.LabelPosition : Swift.Hashable {}
+extension IDentityLiteSDK.FingerPrintCapture.LabelPosition : Swift.Equatable {}
+extension IDentityLiteSDK.FingerPrintCapture.LabelPosition : Swift.Hashable {}
+extension IDentityLiteSDK.CompressionMethod : Swift.Equatable {}
+extension IDentityLiteSDK.CompressionMethod : Swift.Hashable {}
+extension IDentityLiteSDK.CompressionMethod : Swift.RawRepresentable {}
 extension IDentityLiteSDK.InitializationState : Swift.Equatable {}
 extension IDentityLiteSDK.InitializationState : Swift.Hashable {}
 extension IDentityLiteSDK.InitializationState : Swift.RawRepresentable {}

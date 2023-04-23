@@ -1,5 +1,5 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.7.2 (swiftlang-5.7.2.135.5 clang-1400.0.29.51)
+// swift-compiler-version: Apple Swift version 5.8 (swiftlang-5.8.0.124.2 clang-1403.0.22.11.100)
 // swift-module-flags: -target arm64-apple-ios13.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name IDentityLiteSDK
 // swift-module-flags-ignorable: -enable-bare-slash-regex
 import AVFoundation
@@ -49,8 +49,8 @@ extension IDentityLiteSDK.FingerPrintCapture {
 }
 public struct CustomerVerifyDataResponse : Swift.Codable {
   public var extractedPersonalData: IDentityLiteSDK.PersonalCustomerVerifyResponseData?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public protocol DocumentCaptureDelegate : AnyObject {
   func updated(state: IDentityLiteSDK.DocumentCaptureState)
@@ -74,7 +74,7 @@ public class DocumentCapture {
   public static var fonts: IDentityLiteSDK.DocumentCapture.Fonts
   public static var images: IDentityLiteSDK.DocumentCapture.Images
   public static var layout: IDentityLiteSDK.DocumentCapture.Layout
-  weak public var delegate: IDentityLiteSDK.DocumentCaptureDelegate?
+  weak public var delegate: (any IDentityLiteSDK.DocumentCaptureDelegate)?
   public init(overlayFrame: CoreFoundation.CGRect)
   public func retry()
   @objc deinit
@@ -112,20 +112,20 @@ public struct FormDetailValidateIdResponseData : Swift.Codable {
   public var verificationResultDetails: [Swift.String : Any]?
   public var verificationResult: Swift.String?
   public var verificationResultCode: Swift.String?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public struct CustomerEnrollDataResponse : Swift.Codable {
   public var extractedIdData: IDentityLiteSDK.IdDataResponse?
   public var extractedPersonalData: IDentityLiteSDK.PersonalCustomerEnrollResponseData?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public struct SignatureData : Swift.Codable {
   public var signatureImage: Swift.String?
   public init(signatureImage: Swift.String? = nil)
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public struct AdditionalCustomerEnrollBiometricRequestData : Swift.Encodable {
   public enum NeedImmediateResponse : Swift.String, Swift.Encodable {
@@ -152,7 +152,7 @@ public struct AdditionalCustomerEnrollBiometricRequestData : Swift.Encodable {
   public var metadata: IDentityLiteSDK.Metadata?
   public var ocrMetadata: IDentityLiteSDK.OcrMetadata?
   public init(uniqueRequestId: Swift.String = UUID().uuidString, needImmediateResponse: IDentityLiteSDK.AdditionalCustomerEnrollBiometricRequestData.NeedImmediateResponse? = nil, deDuplicationRequired: IDentityLiteSDK.AdditionalCustomerEnrollBiometricRequestData.DeDuplicationRequired? = nil)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 extension Swift.Dictionary {
   public static func += (lhs: inout Swift.Dictionary<Key, Value>, rhs: Swift.Dictionary<Key, Value>)
@@ -173,7 +173,7 @@ public struct BiometricVerifyRequestData : Swift.Encodable {
   public var fingerPrintData: IDentityLiteSDK.FingerPrintData?
   public var voiceData: Swift.String?
   public init(selfie: Swift.String, fingerPrintData: IDentityLiteSDK.FingerPrintData? = nil, voiceData: Swift.String? = nil)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct AdditionalCustomerWFlagCommonData : Swift.Encodable {
   public enum ManualReviewRequired : Swift.String, Swift.Encodable {
@@ -301,7 +301,7 @@ public struct AdditionalCustomerWFlagCommonData : Swift.Encodable {
   public var metadata: IDentityLiteSDK.Metadata?
   public var ocrMetadata: IDentityLiteSDK.OcrMetadata?
   public init(uniqueRequestId: Swift.String = UUID().uuidString, manualReviewRequired: IDentityLiteSDK.AdditionalCustomerWFlagCommonData.ManualReviewRequired? = .no, bypassAgeValidation: IDentityLiteSDK.AdditionalCustomerWFlagCommonData.BypassAgeValidation? = .no, deDuplicationRequired: IDentityLiteSDK.AdditionalCustomerWFlagCommonData.DeDuplicationRequired? = .no, bypassNameMatching: IDentityLiteSDK.AdditionalCustomerWFlagCommonData.BypassNameMatching? = .yes, postDataAPIRequired: IDentityLiteSDK.AdditionalCustomerWFlagCommonData.PostDataAPIRequired? = .no, sendInputImagesInPost: IDentityLiteSDK.AdditionalCustomerWFlagCommonData.SendInputImagesInPost? = .no, sendProcessedImagesInPost: IDentityLiteSDK.AdditionalCustomerWFlagCommonData.SendProcessedImagesInPost? = .no, needImmediateResponse: IDentityLiteSDK.AdditionalCustomerWFlagCommonData.NeedImmediateResponse? = .no, deduplicationSynchronous: IDentityLiteSDK.AdditionalCustomerWFlagCommonData.DeduplicationSynchronous? = .no, verifyDataWithHost: IDentityLiteSDK.AdditionalCustomerWFlagCommonData.VerifyDataWithHost? = .no, idBackImageRequired: IDentityLiteSDK.AdditionalCustomerWFlagCommonData.IdBackImageRequired? = .yes, stripSpecialCharacters: IDentityLiteSDK.AdditionalCustomerWFlagCommonData.StripSpecialCharacters? = .yes)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct CustomerValidateIdFaceMatchDataRequest : Swift.Encodable {
   public var idData: IDentityLiteSDK.IdDataRequest
@@ -309,7 +309,7 @@ public struct CustomerValidateIdFaceMatchDataRequest : Swift.Encodable {
   public var additionalDocuments: [IDentityLiteSDK.AdditionalDocumentsRequest]?
   public var biometericData: IDentityLiteSDK.BiometricValidateIdFaceMatchData
   public init(idData: IDentityLiteSDK.IdDataRequest, personalData: IDentityLiteSDK.PersonalCustomerCommonRequestData1? = nil, additionalDocuments: [IDentityLiteSDK.AdditionalDocumentsRequest]? = nil, biometericData: IDentityLiteSDK.BiometricValidateIdFaceMatchData)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct PersonalCustomerCommonRequestData : Swift.Encodable {
   public enum Gender : Swift.String, Swift.Encodable {
@@ -335,21 +335,21 @@ public struct PersonalCustomerCommonRequestData : Swift.Encodable {
   public var cardToken: Swift.String?
   public var cardLast4: Swift.String?
   public init(uniqueNumber: Swift.String, name: Swift.String? = nil, phone: Swift.String? = nil, email: Swift.String? = nil, dob: Swift.String? = nil, gender: IDentityLiteSDK.PersonalCustomerCommonRequestData.Gender? = nil, addressLine1: Swift.String? = nil, addressLine2: Swift.String? = nil, city: Swift.String? = nil, district: Swift.String? = nil, country: Swift.String? = nil, cardToken: Swift.String? = nil, cardLast4: Swift.String? = nil)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct CustomerValidateIdDataRequest : Swift.Encodable {
   public var idData: IDentityLiteSDK.IdDataRequest
   public var personalData: IDentityLiteSDK.PersonalCustomerCommonRequestData1?
   public var additionalDocuments: [IDentityLiteSDK.AdditionalDocumentsRequest]?
   public init(idData: IDentityLiteSDK.IdDataRequest, personalData: IDentityLiteSDK.PersonalCustomerCommonRequestData1? = nil, additionalDocuments: [IDentityLiteSDK.AdditionalDocumentsRequest]? = nil)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct BiometricEnrollBiometricRequestData : Swift.Encodable {
   public var selfie: Swift.String?
   public var fingerPrintData: IDentityLiteSDK.FingerPrintData?
   public var voiceData: Swift.String?
   public init(selfie: Swift.String? = nil, fingerPrintData: IDentityLiteSDK.FingerPrintData? = nil, voiceData: Swift.String? = nil)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public class SignatureCapture {
   public static var options: IDentityLiteSDK.SignatureCapture.Options
@@ -371,8 +371,8 @@ public struct StatusData : Swift.Codable {
   public var statusMessage: Swift.String?
   public var errorData: Swift.String?
   public var requestId: Swift.Int?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 extension IDentityLiteSDK.DocumentCapture {
   public struct Fonts {
@@ -392,7 +392,7 @@ public struct Metadata : Swift.Encodable {
     public var left: Swift.Float
     public var bottom: Swift.Float
     public init(detectedFrame: CoreFoundation.CGRect, fullImageSize: CoreFoundation.CGSize)
-    public func encode(to encoder: Swift.Encoder) throws
+    public func encode(to encoder: any Swift.Encoder) throws
   }
   public struct Front : Swift.Encodable {
     public var operationTime: Swift.Int
@@ -401,7 +401,7 @@ public struct Metadata : Swift.Encodable {
     public var detectedRect: IDentityLiteSDK.Metadata.DetectedRect
     public var confidence: Swift.String
     public init(operationTime: Swift.Int, captureTime: Swift.Int, avgRealness: Swift.Float?, detectedRect: IDentityLiteSDK.Metadata.DetectedRect, confidence: Swift.Float)
-    public func encode(to encoder: Swift.Encoder) throws
+    public func encode(to encoder: any Swift.Encoder) throws
   }
   public struct Back : Swift.Encodable {
     public var operationTime: Swift.Int
@@ -410,7 +410,7 @@ public struct Metadata : Swift.Encodable {
     public var detectedRect: IDentityLiteSDK.Metadata.DetectedRect
     public var confidence: Swift.String
     public init(operationTime: Swift.Int, captureTime: Swift.Int, avgRealness: Swift.Float?, detectedRect: IDentityLiteSDK.Metadata.DetectedRect, confidence: Swift.Float)
-    public func encode(to encoder: Swift.Encoder) throws
+    public func encode(to encoder: any Swift.Encoder) throws
   }
   public struct Selfie : Swift.Encodable {
     public var avg_score: Swift.String
@@ -418,19 +418,19 @@ public struct Metadata : Swift.Encodable {
     public var captureTime: Swift.Int
     public var detectedRect: IDentityLiteSDK.Metadata.DetectedRect
     public init(avgLiveness: Swift.Float, operationTime: Swift.Int, captureTime: Swift.Int, detectedRect: IDentityLiteSDK.Metadata.DetectedRect)
-    public func encode(to encoder: Swift.Encoder) throws
+    public func encode(to encoder: any Swift.Encoder) throws
   }
   public var front: [IDentityLiteSDK.Metadata.Front]?
   public var back: [IDentityLiteSDK.Metadata.Back]?
   public var selfie: [IDentityLiteSDK.Metadata.Selfie]?
   public init(front: [IDentityLiteSDK.Metadata.Front]? = nil, back: [IDentityLiteSDK.Metadata.Back]? = nil, selfie: [IDentityLiteSDK.Metadata.Selfie]? = nil)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct CustomerValidateIdFaceMatchDataResponse : Swift.Codable {
   public var extractedIdData: IDentityLiteSDK.IdDataResponse?
   public var extractedPersonalData: IDentityLiteSDK.PersonalCustomerValidateIdFaceMatchResponseData?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public protocol IDCaptureDelegate : AnyObject {
   func updated(state: IDentityLiteSDK.IDCaptureState)
@@ -441,6 +441,7 @@ public enum IDCaptureState {
   case moveCloser
   case moveAway
   case alignRectangle
+  case notInFocus
   case detectedBox(IDentityLiteSDK.DetectedData)
   case classifiedDocument(IDentityLiteSDK.DetectedData)
   case success(IDentityLiteSDK.DetectedData)
@@ -453,6 +454,7 @@ public struct DebugData {
   public var faceLocation: CoreFoundation.CGRect?
   public var realnessScores: IDentityLiteSDK.RealnessScores?
   public var topClassifierResults: [(Swift.String, Swift.Float)]?
+  public var focusScore: Swift.Float?
 }
 public struct DetectedData {
   public enum DocumentSide {
@@ -504,7 +506,7 @@ public class IDCapture {
   public static var fonts: IDentityLiteSDK.IDCapture.Fonts
   public static var images: IDentityLiteSDK.IDCapture.Images
   public static var layout: IDentityLiteSDK.IDCapture.Layout
-  weak public var delegate: IDentityLiteSDK.IDCaptureDelegate?
+  weak public var delegate: (any IDentityLiteSDK.IDCaptureDelegate)?
   public init(overlayFrame: CoreFoundation.CGRect, isVideoCapture: Swift.Bool = false)
   public func typeMismatch()
   public func retry()
@@ -557,12 +559,12 @@ public struct AdditionalCustomerCommonData : Swift.Encodable {
   public var metadata: IDentityLiteSDK.Metadata?
   public var ocrMetadata: IDentityLiteSDK.OcrMetadata?
   public init(uniqueRequestId: Swift.String)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct CustomerIdentifyDataResponse : Swift.Codable {
   public var extractedPersonalData: IDentityLiteSDK.PersonalCustomerIdentifyResponseData?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public struct FormDetailVerifyResponseData : Swift.Codable {
   public var uniqueRequestId: Swift.String?
@@ -570,15 +572,15 @@ public struct FormDetailVerifyResponseData : Swift.Codable {
   public var verificationResultDetails: [Swift.String : Any]?
   public var verificationResult: Swift.String?
   public var verificationResultCode: Swift.String?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public struct CustomerVerifyDataRequest : Swift.Encodable {
   public var personalData: IDentityLiteSDK.PersonalCustomerVerifyData
   public var additionalDocuments: [IDentityLiteSDK.AdditionalDocumentsRequest]?
   public var biometericData: IDentityLiteSDK.BiometricVerifyRequestData
   public init(personalData: IDentityLiteSDK.PersonalCustomerVerifyData, additionalDocuments: [IDentityLiteSDK.AdditionalDocumentsRequest]? = nil, biometricData: IDentityLiteSDK.BiometricVerifyRequestData)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 extension Foundation.FileManager {
   public class var documentDirectory: Foundation.URL {
@@ -636,8 +638,8 @@ public struct PersonalCustomerVerifyResponseData : Swift.Codable {
   public var district: Swift.String?
   public var enrolledDate: Swift.String?
   public var enrolledFaceImage: Swift.String?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public struct PersonalCustomerIdentifyResponseData : Swift.Codable {
   public var uniqueNumber: Swift.String?
@@ -658,8 +660,8 @@ public struct PersonalCustomerIdentifyResponseData : Swift.Codable {
   public var fingerprintUsedForVerification: Swift.String?
   public var enrolledDate: Swift.String?
   public var enrolledFaceImage: Swift.String?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public struct FormDetailEnrollBiometricsResponseData : Swift.Codable {
   public var uniqueRequestId: Swift.String?
@@ -677,8 +679,8 @@ public struct FormDetailEnrollBiometricsResponseData : Swift.Codable {
   public var eyeCoveringScore: Swift.Double?
   public var cellPhone: Swift.String?
   public var cellPhoneScore: Swift.Double?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 extension IDentityLiteSDK.IDCapture {
   public struct Options {
@@ -694,6 +696,7 @@ extension IDentityLiteSDK.IDCapture {
     public var uploadIdData: Swift.Bool
     public var enableRealId: Swift.Bool
     public var enableInstructionScreen: Swift.Bool
+    public var focusThreshold: Swift.Float
   }
 }
 public struct CustomerEnrollBiometricsRequest : Swift.Encodable {
@@ -701,7 +704,7 @@ public struct CustomerEnrollBiometricsRequest : Swift.Encodable {
   public var customerData: IDentityLiteSDK.CustomerEnrollBiometricDataRequest
   public var additionalData: IDentityLiteSDK.AdditionalCustomerEnrollBiometricRequestData
   public init(securityData: IDentityLiteSDK.SecurityData, customerData: IDentityLiteSDK.CustomerEnrollBiometricDataRequest, additionalData: IDentityLiteSDK.AdditionalCustomerEnrollBiometricRequestData)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct CustomerEnrollRequest : Swift.Encodable {
   public var securityData: IDentityLiteSDK.SecurityData
@@ -710,16 +713,16 @@ public struct CustomerEnrollRequest : Swift.Encodable {
   public var signature: IDentityLiteSDK.SignatureData?
   public var employee: IDentityLiteSDK.EmployeeData?
   public init(securityData: IDentityLiteSDK.SecurityData, customerData: IDentityLiteSDK.CustomerEnrollDataRequest, additionalData: IDentityLiteSDK.AdditionalCustomerWFlagCommonData, signature: IDentityLiteSDK.SignatureData? = nil, employee: IDentityLiteSDK.EmployeeData? = nil)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public typealias HostdataResponse = [Swift.String : Any]
-public typealias ValidateIdAPICompletion = (_ result: Swift.Result<IDentityLiteSDK.CustomerValidateIdResponse, Swift.Error>, _ hostData: IDentityLiteSDK.HostdataResponse?) -> Swift.Void
-public typealias LiveFaceCheckAPICompletion = (_ result: Swift.Result<IDentityLiteSDK.CustomerLiveCheckResponse, Swift.Error>) -> Swift.Void
-public typealias ValidateIdMatchFaceAPICompletion = (_ result: Swift.Result<IDentityLiteSDK.CustomerValidateIdFaceMatchResponse, Swift.Error>, _ hostData: IDentityLiteSDK.HostdataResponse?) -> Swift.Void
-public typealias ValidateIdCustomerEnrollAPICompletion = (_ result: Swift.Result<IDentityLiteSDK.CustomerEnrollResponse, Swift.Error>, _ hostData: IDentityLiteSDK.HostdataResponse?) -> Swift.Void
-public typealias CustomerEnrollBiometricsAPICompletion = (_ result: Swift.Result<IDentityLiteSDK.CustomerEnrollBiometricResponse, Swift.Error>) -> Swift.Void
-public typealias CustomerVerificationAPICompletion = (_ result: Swift.Result<IDentityLiteSDK.CustomerVerifyResponse, Swift.Error>) -> Swift.Void
-public typealias CustomerIdentifyAPICompletion = (_ result: Swift.Result<IDentityLiteSDK.CustomerIdentifyResponse, Swift.Error>) -> Swift.Void
+public typealias ValidateIdAPICompletion = (_ result: Swift.Result<IDentityLiteSDK.CustomerValidateIdResponse, any Swift.Error>, _ hostData: IDentityLiteSDK.HostdataResponse?) -> Swift.Void
+public typealias LiveFaceCheckAPICompletion = (_ result: Swift.Result<IDentityLiteSDK.CustomerLiveCheckResponse, any Swift.Error>) -> Swift.Void
+public typealias ValidateIdMatchFaceAPICompletion = (_ result: Swift.Result<IDentityLiteSDK.CustomerValidateIdFaceMatchResponse, any Swift.Error>, _ hostData: IDentityLiteSDK.HostdataResponse?) -> Swift.Void
+public typealias ValidateIdCustomerEnrollAPICompletion = (_ result: Swift.Result<IDentityLiteSDK.CustomerEnrollResponse, any Swift.Error>, _ hostData: IDentityLiteSDK.HostdataResponse?) -> Swift.Void
+public typealias CustomerEnrollBiometricsAPICompletion = (_ result: Swift.Result<IDentityLiteSDK.CustomerEnrollBiometricResponse, any Swift.Error>) -> Swift.Void
+public typealias CustomerVerificationAPICompletion = (_ result: Swift.Result<IDentityLiteSDK.CustomerVerifyResponse, any Swift.Error>) -> Swift.Void
+public typealias CustomerIdentifyAPICompletion = (_ result: Swift.Result<IDentityLiteSDK.CustomerIdentifyResponse, any Swift.Error>) -> Swift.Void
 extension IDentityLiteSDK.IDentitySDK {
   public class func post(validateId request: IDentityLiteSDK.CustomerValidateIdRequest, completion: @escaping IDentityLiteSDK.ValidateIdAPICompletion)
   public class func post(liveFaceCheck request: IDentityLiteSDK.CustomerLiveCheckRequest, completion: @escaping IDentityLiteSDK.LiveFaceCheckAPICompletion)
@@ -778,14 +781,14 @@ public struct FingerPrint : Swift.Encodable {
   public var imageHashValue: Swift.String?
   public var nfiq: Swift.String?
   public init(fpData: Swift.String, fpPosition: IDentityLiteSDK.FingerPrint.Position, imageHashValue: Swift.String? = nil, nfiq: Swift.String? = nil)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct CustomerEnrollBiometricDataRequest : Swift.Encodable {
   public var personalData: IDentityLiteSDK.PersonalCustomerCommonRequestData
   public var additionalDocuments: [IDentityLiteSDK.AdditionalDocumentsRequest]?
   public var biometericData: IDentityLiteSDK.BiometricEnrollBiometricRequestData
   public init(personalData: IDentityLiteSDK.PersonalCustomerCommonRequestData, additionalDocuments: [IDentityLiteSDK.AdditionalDocumentsRequest]? = nil, biometricData: IDentityLiteSDK.BiometricEnrollBiometricRequestData)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 extension IDentityLiteSDK.IDCapture {
   public struct Fonts {
@@ -805,7 +808,7 @@ extension IDentityLiteSDK.FingerPrintCapture {
 public struct BiometricLiveCheckData : Swift.Encodable {
   public var selfie: Swift.String
   public init(selfie: Swift.String)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public typealias BoolCompletion = (Swift.Bool) -> Swift.Void
 public protocol CaptureSessionDelegate : AnyObject {
@@ -825,7 +828,7 @@ public enum CaptureMode {
 }
 @objc @_inheritsConvenienceInitializers public class CaptureSession : ObjectiveC.NSObject {
   final public let videoDataOutput: AVFoundation.AVCaptureVideoDataOutput
-  weak public var delegate: IDentityLiteSDK.CaptureSessionDelegate?
+  weak public var delegate: (any IDentityLiteSDK.CaptureSessionDelegate)?
   public var cameraPosition: AVFoundation.AVCaptureDevice.Position
   public var captureMode: IDentityLiteSDK.CaptureMode {
     get
@@ -992,7 +995,7 @@ public struct XMLAttribute {
   public var innerXML: Swift.String {
     get
   }
-  public var children: [IDentityLiteSDK.XMLContent]
+  public var children: [any IDentityLiteSDK.XMLContent]
   @objc deinit
 }
 extension IDentityLiteSDK.TextElement : Swift.CustomStringConvertible {
@@ -1027,22 +1030,22 @@ extension IDentityLiteSDK.XMLElement {
 public struct CustomerDataValidateIdResponse : Swift.Codable {
   public var extractedIdData: IDentityLiteSDK.IdDataResponse?
   public var extractedPersonalData: IDentityLiteSDK.PersonalCustomerValidateIdResponseData?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public struct CustomerVerifyRequest : Swift.Encodable {
   public var securityData: IDentityLiteSDK.SecurityData
   public var customerData: IDentityLiteSDK.CustomerVerifyDataRequest
   public var additionalData: IDentityLiteSDK.AdditionalCustomerCommonData
   public init(securityData: IDentityLiteSDK.SecurityData, customerData: IDentityLiteSDK.CustomerVerifyDataRequest, additionalData: IDentityLiteSDK.AdditionalCustomerCommonData)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct CustomerVerifyResponse : Swift.Codable {
   public var status: IDentityLiteSDK.StatusData?
   public var resultData: IDentityLiteSDK.FormDetailVerifyResponseData?
   public var responseCustomerVerifyData: IDentityLiteSDK.CustomerVerifyDataResponse?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 extension IDentityLiteSDK.Archive {
   final public func extract(_ entry: IDentityLiteSDK.Entry, to url: Foundation.URL, bufferSize: Swift.Int = defaultReadChunkSize, skipCRC32: Swift.Bool = false, progress: Foundation.Progress? = nil) throws -> IDentityLiteSDK.CRC32
@@ -1072,7 +1075,7 @@ extension Foundation.Data {
 public struct EmployeeData : Swift.Encodable {
   public var companyId: Swift.String?
   public init(companyId: Swift.String? = nil)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 extension IDentityLiteSDK.Archive {
   final public func totalUnitCountForRemoving(_ entry: IDentityLiteSDK.Entry) -> Swift.Int64
@@ -1085,7 +1088,7 @@ public struct CustomerEnrollDataRequest : Swift.Encodable {
   public var additionalDocuments: [IDentityLiteSDK.AdditionalDocumentsRequest]?
   public var biometericData: IDentityLiteSDK.BiometricEnrollData
   public init(idData: IDentityLiteSDK.IdDataRequest, personalData: IDentityLiteSDK.PersonalCustomerCommonRequestData, additionalDocuments: [IDentityLiteSDK.AdditionalDocumentsRequest]? = nil, biometricData: IDentityLiteSDK.BiometricEnrollData)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct QKMRZResult {
   public let documentType: Swift.String
@@ -1110,14 +1113,14 @@ public struct BiometricEnrollData : Swift.Encodable {
   public var fingerPrintData: IDentityLiteSDK.FingerPrintData?
   public var voiceData: Swift.String?
   public init(selfie: Swift.String, fingerPrintData: IDentityLiteSDK.FingerPrintData? = nil, voiceData: Swift.String? = nil)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct SecurityData : Swift.Encodable {
   public var userName: Swift.String
   public var password: Swift.String
   public var merchantId: Swift.Int
   public init(userName: Swift.String, password: Swift.String, merchantId: Swift.Int)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 @_hasMissingDesignatedInitializers @objc public class DetectedFingerPrintData : ObjectiveC.NSObject {
   @objc public var boxes: [CoreFoundation.CGFloat]
@@ -1136,15 +1139,15 @@ public struct CustomerValidateIdResponse : Swift.Codable {
   public var status: IDentityLiteSDK.StatusData?
   public var resultData: IDentityLiteSDK.FormDetailValidateIdResponseData?
   public var responseCustomerData: IDentityLiteSDK.CustomerDataValidateIdResponse?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public struct CustomerIdentifyRequest : Swift.Encodable {
   public var securityData: IDentityLiteSDK.SecurityData
   public var biometericData: IDentityLiteSDK.BiometricIdentifyData
   public var additionalData: IDentityLiteSDK.AdditionalCustomerCommonData
   public init(securityData: IDentityLiteSDK.SecurityData, biometricData: IDentityLiteSDK.BiometricIdentifyData, additionalData: IDentityLiteSDK.AdditionalCustomerCommonData)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 extension IDentityLiteSDK.SignatureCapture {
   public struct Images {
@@ -1152,8 +1155,8 @@ extension IDentityLiteSDK.SignatureCapture {
 }
 public struct AdditionalCustomerLiveCheckResponseData : Swift.Codable {
   public var liveFaceDetectionFlag: Swift.String?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 extension IDentityLiteSDK.Archive {
   final public func addEntry(with path: Swift.String, relativeTo baseURL: Foundation.URL, compressionMethod: IDentityLiteSDK.CompressionMethod = .none, bufferSize: Swift.Int = defaultWriteChunkSize, progress: Foundation.Progress? = nil) throws
@@ -1186,10 +1189,10 @@ public struct PersonalCustomerValidateIdFaceMatchResponseData : Swift.Codable {
   public var addressLine1NonEng: Swift.String?
   public var addressLine2NonEng: Swift.String?
   public var photoOnFile: Swift.String?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
-public typealias DocumentCaptureCompletion = (_ result: Swift.Result<IDentityLiteSDK.AdditionalDocumentsRequest, Swift.Error>) -> Swift.Void
+public typealias DocumentCaptureCompletion = (_ result: Swift.Result<IDentityLiteSDK.AdditionalDocumentsRequest, any Swift.Error>) -> Swift.Void
 extension IDentityLiteSDK.IDentitySDK {
   public class func documentCapture(from presenter: UIKit.UIViewController, documentName name: Swift.String, uploadDocument: Swift.Bool = false, completion: @escaping IDentityLiteSDK.DocumentCaptureCompletion)
 }
@@ -1210,16 +1213,16 @@ public struct FormDetailLiveCheckResponseData : Swift.Codable {
   public var cellPhone: Swift.String?
   public var cellPhoneScore: Swift.Double?
   public var estimatedAge: Swift.Double?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public struct FormDetailIdentifyResponseData : Swift.Codable {
   public var uniqueRequestId: Swift.String?
   public var verificationResultId: Swift.Int?
   public var verificationResultDetails: [Swift.String : Any]?
   public var verificationResult: Swift.String?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 extension IDentityLiteSDK.SelfieCapture {
   public struct Colors {
@@ -1250,8 +1253,8 @@ public struct CustomerLiveCheckResponse : Swift.Codable {
   public var status: IDentityLiteSDK.StatusData?
   public var resultData: IDentityLiteSDK.FormDetailLiveCheckResponseData?
   public var additionalData: IDentityLiteSDK.AdditionalCustomerLiveCheckResponseData?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public struct IdDataRequest : Swift.Encodable {
   public enum IdType : Swift.String, Swift.Encodable {
@@ -1283,13 +1286,13 @@ public struct IdDataRequest : Swift.Encodable {
   public var idImageFront: Swift.String
   public var idImageBack: Swift.String?
   public init(idType: IDentityLiteSDK.IdDataRequest.IdType, idCountry: Swift.String, idState: Swift.String? = nil, idImageFront: Swift.String, idImageBack: Swift.String? = nil)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct CustomerLiveCheckDataRequest : Swift.Encodable {
   public var additionalDocuments: [IDentityLiteSDK.AdditionalDocumentsRequest]?
   public var biometericData: IDentityLiteSDK.BiometricLiveCheckData
   public init(additionalDocuments: [IDentityLiteSDK.AdditionalDocumentsRequest]? = nil, biometericData: IDentityLiteSDK.BiometricLiveCheckData)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 extension IDentityLiteSDK.SelfieCapture {
   public struct Images {
@@ -1346,22 +1349,22 @@ public struct DeDuplicationResponseData : Swift.Codable {
   public var duplicateVoiceMatchScore: Swift.String?
   public var duplicateFrontImage: Swift.String?
   public var duplicateBackImage: Swift.String?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public struct BiometricIdentifyData : Swift.Encodable {
   public var selfie: Swift.String
   public var fingerPrintData: IDentityLiteSDK.FingerPrintData?
   public var voiceData: Swift.String?
   public init(selfie: Swift.String, fingerPrintData: IDentityLiteSDK.FingerPrintData? = nil, voiceData: Swift.String? = nil)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct CustomerValidateIdRequest : Swift.Encodable {
   public var securityData: IDentityLiteSDK.SecurityData
   public var customerData: IDentityLiteSDK.CustomerValidateIdDataRequest
   public var additionalData: IDentityLiteSDK.AdditionalCustomerWFlagCommonData
   public init(securityData: IDentityLiteSDK.SecurityData, customerData: IDentityLiteSDK.CustomerValidateIdDataRequest, additionalData: IDentityLiteSDK.AdditionalCustomerWFlagCommonData)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct MRZResult : Swift.Encodable {
   public var dictionary: [Swift.String : Swift.String] {
@@ -1373,7 +1376,7 @@ public struct MRZResult : Swift.Encodable {
   public var expiryDateString: Swift.String? {
     get
   }
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 extension IDentityLiteSDK.MRZResult : Swift.Equatable {
   public static func == (lhs: IDentityLiteSDK.MRZResult, rhs: IDentityLiteSDK.MRZResult) -> Swift.Bool
@@ -1394,7 +1397,7 @@ public struct FingerPrintMetadata : Swift.Encodable {
   public var serialNumber: Swift.String?
   public var backgroundColor: Swift.String?
   public init(format: IDentityLiteSDK.FingerPrintMetadata.Format, model: Swift.String? = nil, serialNumber: Swift.String? = nil, backgroundColor: Swift.String? = nil)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 @objc @_inheritsConvenienceInitializers public class IDError : Foundation.NSError {
   convenience public init(_ localizedDescription: Swift.String)
@@ -1438,6 +1441,7 @@ extension IDentityLiteSDK.IDCapture {
     public var moveCloser: Swift.String
     public var moveAway: Swift.String
     public var alignRectangle: Swift.String
+    public var notInFocus: Swift.String
     public var useFront: Swift.String
     public var makeSurePhotoTextVisible: Swift.String
     public var scanBarcode: Swift.String
@@ -1479,8 +1483,8 @@ public struct PersonalCustomerValidateIdResponseData : Swift.Codable {
   public var addressNonEng: Swift.String?
   public var addressLine1NonEng: Swift.String?
   public var addressLine2NonEng: Swift.String?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public enum Language : Swift.String {
   case none
@@ -1501,14 +1505,14 @@ public struct CustomerEnrollResponse : Swift.Codable {
   public var resultData: IDentityLiteSDK.FormDetailCommonResponseData?
   public var deDuplicationData: [IDentityLiteSDK.DeDuplicationResponseData]?
   public var responseCustomerData: IDentityLiteSDK.CustomerEnrollDataResponse?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public struct FingerPrintData : Swift.Encodable {
   public var fingerPrints: [IDentityLiteSDK.FingerPrint]
   public var metadata: IDentityLiteSDK.FingerPrintMetadata
   public init(fingerPrints: [IDentityLiteSDK.FingerPrint], metadata: IDentityLiteSDK.FingerPrintMetadata)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 extension Foundation.FileManager {
   public func zipItem(at sourceURL: Foundation.URL, to destinationURL: Foundation.URL, shouldKeepParent: Swift.Bool = true, compressionMethod: IDentityLiteSDK.CompressionMethod = .none, progress: Foundation.Progress? = nil) throws
@@ -1527,8 +1531,8 @@ public struct CustomerValidateIdFaceMatchResponse : Swift.Codable {
   public var status: IDentityLiteSDK.StatusData?
   public var resultData: IDentityLiteSDK.FormDetailCommonResponseData?
   public var responseCustomerData: IDentityLiteSDK.CustomerValidateIdFaceMatchDataResponse?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 extension IDentityLiteSDK.SelfieCapture {
   public struct Strings {
@@ -1599,8 +1603,8 @@ public struct State : Swift.Codable {
   public var stateCode: Swift.String
   public var countryCode: Swift.String
   public var stateName: Swift.String
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public struct StateList {
   public static var states: [IDentityLiteSDK.State] {
@@ -1622,6 +1626,7 @@ extension IDentityLiteSDK.FingerPrintCapture {
 extension IDentityLiteSDK.DocumentCapture {
   public struct Images {
     public var instructionScreenImage: UIKit.UIImage?
+    public var instructionBackButtonImage: UIKit.UIImage?
     public var closeButtonImage: UIKit.UIImage?
     public var silhouetteImage: UIKit.UIImage?
     public var bottomInfoImage: UIKit.UIImage?
@@ -1631,6 +1636,7 @@ extension IDentityLiteSDK.DocumentCapture {
 extension IDentityLiteSDK.DocumentCapture {
   public struct Colors {
     public var instructionScreenBackgroundColor: UIKit.UIColor?
+    public var instructionScreenBackButtonImageTintColor: UIKit.UIColor?
     public var instructionScreenImageTintColor: UIKit.UIColor?
     public var instructionScreenLabelTextColor: UIKit.UIColor?
     public var instructionScreenButtonTextColor: UIKit.UIColor?
@@ -1670,6 +1676,10 @@ extension IDentityLiteSDK.SelfieCapture {
     public var capture4K: Swift.Bool
     public var uploadFaceData: Swift.Bool
     public var enableInstructionScreen: Swift.Bool
+    public var ovalScaleMultiplier: Swift.Float {
+      get
+      set
+    }
   }
 }
 public struct PersonalCustomerEnrollResponseData : Swift.Codable {
@@ -1696,8 +1706,8 @@ public struct PersonalCustomerEnrollResponseData : Swift.Codable {
   public var addressNonEng: Swift.String?
   public var addressLine1NonEng: Swift.String?
   public var addressLine2NonEng: Swift.String?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 extension IDentityLiteSDK.SignatureCapture {
   public struct Fonts {
@@ -1711,7 +1721,7 @@ public struct AdditionalCustomerLiveCheckData : Swift.Encodable {
   public var metadata: IDentityLiteSDK.Metadata?
   public var ocrMetadata: IDentityLiteSDK.OcrMetadata?
   public init(uniqueRequestId: Swift.String)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct PersonalCustomerCommonRequestData1 : Swift.Encodable {
   public enum Gender : Swift.String, Swift.Encodable {
@@ -1735,7 +1745,7 @@ public struct PersonalCustomerCommonRequestData1 : Swift.Encodable {
   public var district: Swift.String?
   public var country: Swift.String?
   public init(uniqueNumber: Swift.String? = nil, name: Swift.String? = nil, phone: Swift.String? = nil, email: Swift.String? = nil, dob: Swift.String? = nil, gender: IDentityLiteSDK.PersonalCustomerCommonRequestData1.Gender? = nil, addressLine1: Swift.String? = nil, addressLine2: Swift.String? = nil, city: Swift.String? = nil, district: Swift.String? = nil, country: Swift.String? = nil)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 extension CoreFoundation.CGRect {
   public func rotatedCCW(in size: CoreFoundation.CGSize) -> CoreFoundation.CGRect
@@ -1797,7 +1807,7 @@ extension QuartzCore.CALayer {
 public struct BiometricValidateIdFaceMatchData : Swift.Encodable {
   public var selfie: Swift.String
   public init(selfie: Swift.String)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 extension UIKit.UIImage {
   public func scaledDownToFit(width newWidth: CoreFoundation.CGFloat) -> UIKit.UIImage?
@@ -1836,8 +1846,8 @@ public struct IdDataResponse : Swift.Codable {
   public var idIssueDateNonEng: Swift.String?
   public var barcodeDataParsed: Swift.String?
   public var photoOnId: Swift.String?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public let defaultReadChunkSize: Swift.Int
 public let defaultWriteChunkSize: Swift.Int
@@ -1890,7 +1900,7 @@ final public class Archive : Swift.Sequence {
 public struct PersonalCustomerVerifyData : Swift.Encodable {
   public var uniqueNumber: Swift.String
   public init(uniqueNumber: Swift.String)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 extension IDentityLiteSDK.DocumentCapture {
   public enum LabelPosition {
@@ -1929,8 +1939,8 @@ public struct FormDetailCommonResponseData : Swift.Codable {
   public var eyeCoveringScore: Swift.Double?
   public var cellPhone: Swift.String?
   public var cellPhoneScore: Swift.Double?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 extension IDentityLiteSDK.SignatureCapture {
   public struct Strings {
@@ -1977,8 +1987,8 @@ extension IDentityLiteSDK.FingerPrintCapture {
 public struct IDType : Swift.Codable {
   public var idTypeCode: Swift.String
   public var idTypeDesc: Swift.String
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public struct IDList {
   public static var idTypes: [IDentityLiteSDK.IDType] {
@@ -2013,7 +2023,7 @@ public class SelfieCapture {
   public static var fonts: IDentityLiteSDK.SelfieCapture.Fonts
   public static var images: IDentityLiteSDK.SelfieCapture.Images
   public static var layout: IDentityLiteSDK.SelfieCapture.Layout
-  weak public var delegate: IDentityLiteSDK.SelfieCaptureDelegate?
+  weak public var delegate: (any IDentityLiteSDK.SelfieCaptureDelegate)?
   public init(overlayFrame: CoreFoundation.CGRect, isVideoCapture: Swift.Bool = false)
   public func retry()
   @objc deinit
@@ -2029,14 +2039,14 @@ public struct CustomerValidateIdFaceMatchRequest : Swift.Encodable {
   public var customerData: IDentityLiteSDK.CustomerValidateIdFaceMatchDataRequest
   public var additionalData: IDentityLiteSDK.AdditionalCustomerWFlagCommonData
   public init(securityData: IDentityLiteSDK.SecurityData, customerData: IDentityLiteSDK.CustomerValidateIdFaceMatchDataRequest, additionalData: IDentityLiteSDK.AdditionalCustomerWFlagCommonData)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct CustomerIdentifyResponse : Swift.Codable {
   public var status: IDentityLiteSDK.StatusData?
   public var resultData: IDentityLiteSDK.FormDetailIdentifyResponseData?
   public var responseCustomerData: IDentityLiteSDK.CustomerIdentifyDataResponse?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public enum CompressionMethod : Swift.UInt16 {
   case none
@@ -2058,20 +2068,20 @@ extension Foundation.Data {
 public struct OcrMetadata : Swift.Encodable {
   public var idData: [Swift.String : Swift.String]
   public init(idData: [Swift.String : Swift.String])
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct CustomerLiveCheckRequest : Swift.Encodable {
   public var securityData: IDentityLiteSDK.SecurityData
   public var customerData: IDentityLiteSDK.CustomerLiveCheckDataRequest
   public var additionalData: IDentityLiteSDK.AdditionalCustomerLiveCheckData
   public init(securityData: IDentityLiteSDK.SecurityData, customerData: IDentityLiteSDK.CustomerLiveCheckDataRequest, additionalData: IDentityLiteSDK.AdditionalCustomerLiveCheckData)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 public struct Country : Swift.Codable {
   public var countryCode: Swift.String
   public var countryName: Swift.String
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 public struct CountryList {
   public static var countries: [IDentityLiteSDK.Country] {
@@ -2101,6 +2111,8 @@ public enum InitializationStage : Swift.String {
   case classifierTrainingModelLabel
   case faceMaskTrainingModelLabel
   case docDetectionTrainingModelLabel
+  case fingerprintDetectionTrainingModelLabel
+  case focusTrainingModelLabel
   public init?(rawValue: Swift.String)
   public typealias RawValue = Swift.String
   public var rawValue: Swift.String {
@@ -2110,7 +2122,7 @@ public enum InitializationStage : Swift.String {
 public protocol InitializationDelegate : AnyObject {
   func updateInitialization(stage: IDentityLiteSDK.InitializationStage, state: IDentityLiteSDK.InitializationState)
 }
-public typealias ErrorCompletion = (Swift.Error?) -> Swift.Void
+public typealias ErrorCompletion = ((any Swift.Error)?) -> Swift.Void
 @_hasMissingDesignatedInitializers public class IDentitySDK {
   public struct LoginCredentials {
     public let loginId: Swift.String
@@ -2120,7 +2132,7 @@ public typealias ErrorCompletion = (Swift.Error?) -> Swift.Void
   public static var loginCredentials: IDentityLiteSDK.IDentitySDK.LoginCredentials? {
     get
   }
-  weak public static var delegate: IDentityLiteSDK.InitializationDelegate?
+  weak public static var delegate: (any IDentityLiteSDK.InitializationDelegate)?
   public class func initializeSDK(loginId: Swift.String, password: Swift.String, merchantId: Swift.String, language: IDentityLiteSDK.Language = .en, completion: @escaping IDentityLiteSDK.ErrorCompletion)
   @objc deinit
 }
@@ -2129,6 +2141,12 @@ extension IDentityLiteSDK.IDentitySDK {
     get
   }
   public static var docDetectionModelName: Swift.String {
+    get
+  }
+  public static var fingerprintDetectionModelName: Swift.String {
+    get
+  }
+  public static var focusModelName: Swift.String {
     get
   }
   public static var modelVersions: [Swift.String : Swift.String] {
@@ -2143,7 +2161,7 @@ public struct AdditionalDocumentsRequest : Swift.Encodable {
   public var documentName: Swift.String
   public var additionalDocument: Swift.String
   public init(documentName: Swift.String, additionalDocument: Swift.String)
-  public func encode(to encoder: Swift.Encoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
 }
 extension IDentityLiteSDK.IDCapture {
   public enum LabelPosition {
@@ -2164,8 +2182,8 @@ public struct CustomerEnrollBiometricResponse : Swift.Codable {
   public var status: IDentityLiteSDK.StatusData?
   public var resultData: IDentityLiteSDK.FormDetailEnrollBiometricsResponseData?
   public var deDuplicationData: [IDentityLiteSDK.DeDuplicationResponseData]?
-  public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
 }
 extension IDentityLiteSDK.SignatureCapture.LabelPosition : Swift.Equatable {}
 extension IDentityLiteSDK.SignatureCapture.LabelPosition : Swift.Hashable {}

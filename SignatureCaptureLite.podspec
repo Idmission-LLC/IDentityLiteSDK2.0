@@ -2,7 +2,7 @@ Pod::Spec.new do |spec|
 
 
   spec.name         = "SignatureCaptureLite"
-  spec.version      = "9.5.2.2.3"
+  spec.version      = "9.5.3.2.3"
   spec.summary      = "SignatureCaptureLite lets user add SignatureCaptureLiteSDK in their project"
   spec.description  = <<-DESC 
                     SignatureCaptureLite helps user to add SignatureCaptureLiteSDK in their project.
